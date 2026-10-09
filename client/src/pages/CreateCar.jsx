@@ -35,7 +35,8 @@ const CreateCar = () => {
         wheels === 'Premium' && interior === 'Cloth'
 
     // Handle form submission
-    const handleSubmit = (event) => {
+    
+    const handleSubmit = async (event) => {
         event.preventDefault()
 
         if (isInvalidCombination) {
@@ -48,7 +49,32 @@ const CreateCar = () => {
             return
         }
 
-        alert('Car is ready to save! Database connection coming next.')
+        try {
+            const response = await fetch('/api/cars', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: carName.trim(),
+                    color,
+                    wheels,
+                    interior
+                })
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                alert(data.message || 'Unable to save car.')
+                return
+            }
+
+            alert(`Car saved successfully! Car ID: ${data.id}`)
+        } catch (error) {
+            console.error('Error saving car:', error)
+            alert('Could not connect to the server.')
+        }
     }
 
     return (

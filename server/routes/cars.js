@@ -1,0 +1,60 @@
+
+import express from 'express'
+import { pool } from '../config/database.js'
+
+const router = express.Router()
+
+const wheelPrices = {
+    Standard: 0,
+    Sport: 1500,
+    Premium: 3000
+}
+
+const interiorPrices = {
+    Cloth: 0,
+    Leather: 2000,
+    Luxury: 4500
+}
+
+router.post('/', async (req, res) => {
+    const { name, color, wheels, interior } = req.body
+
+    if (
+        typeof name !== 'string' ||
+        !name.trim() ||
+        name.trim().length > 100 ||
+        !['Black', 'Red', 'Blue', 'White'].includes(color) ||
+        !Object.hasOwn(wheelPrices, wheels) ||
+        !Object.hasOwn(interiorPrices, interior)
+    ) {
+        return res.status(400).json({
+            message: 'Please provide valid car customization options.'
+        })
+    }
+
+    if (wheels === 'Premium' && interior === 'Cloth') {
+        return res.status(400).json({
+            message: 'Premium Wheels cannot be combined with Cloth Interior.'
+        })
+    }
+
+    const price = 30000 + wheelPrices[wheels] + interiorPrices[interior]
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO custom_cars (name, color, wheels, interior, price)
+             VALUES ($1, $2, $3, $4, $5)
+             RETURNING *`,
+            [name.trim(), color, wheels, interior, price]
+        )
+
+        res.status(201).json(result.rows[0])
+    } catch (error) {
+        console.error('Error saving car:', error)
+        res.status(500).json({
+            message: 'Unable to save car.'
+        })
+    }
+})
+
+export default router
