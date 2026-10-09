@@ -1,13 +1,15 @@
-
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import '../App.css'
 
 const CarDetails = () => {
     const { id } = useParams()
+    const navigate = useNavigate()
+
     const [car, setCar] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
+    const [deleting, setDeleting] = useState(false)
 
     useEffect(() => {
         const fetchCar = async () => {
@@ -30,6 +32,35 @@ const CarDetails = () => {
 
         fetchCar()
     }, [id])
+
+    const handleDelete = async () => {
+        if (!car || deleting) return
+
+        const confirmed = window.confirm(
+            `Are you sure you want to delete "${car.name}"? This cannot be undone.`
+        )
+
+        if (!confirmed) return
+
+        setDeleting(true)
+
+        try {
+            const response = await fetch(`/api/cars/${id}`, {
+                method: 'DELETE'
+            })
+
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.message || 'Unable to delete car.')
+            }
+
+            navigate('/customcars')
+        } catch (error) {
+            console.error('Error deleting car:', error)
+            alert(error.message)
+            setDeleting(false)
+        }
+    }
 
     if (loading) {
         return (
@@ -77,7 +108,41 @@ const CarDetails = () => {
             <h3>Total Price</h3>
             <h2>${car.price.toLocaleString()}</h2>
 
-            <Link to='/customcars'>Back to My Cars</Link>
+            <Link
+                to={`/edit/${car.id}`}
+                style={{
+                    display: 'inline-block',
+                    padding: '12px 24px',
+                    backgroundColor: '#800000',
+                    color: 'white',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    fontWeight: 'bold',
+                    marginBottom: '15px'
+                }}
+            >
+                Edit Car
+            </Link>
+
+            <button
+                type='button'
+                onClick={handleDelete}
+                disabled={deleting}
+                style={{
+                    backgroundColor: '#b91c1c',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    marginBottom: '15px',
+                    cursor: deleting ? 'not-allowed' : 'pointer'
+                }}
+            >
+                {deleting ? 'Deleting...' : 'Delete Car'}
+            </button>
+
+            <Link to='/customcars'>
+                Back to My Cars
+            </Link>
         </main>
     )
 }
