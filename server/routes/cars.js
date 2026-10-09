@@ -57,4 +57,20 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.get('/', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM custom_cars ORDER BY created_at DESC, id DESC'
+        )
+
+        res.status(200).json(result.rows)
+    } catch (error) {
+        console.error('Error fetching cars:', error)
+
+        res.status(500).json({
+            message: 'Unable to fetch cars.'
+        })
+    }
+})
+
 export default router
