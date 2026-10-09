@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import '../App.css'
 
 const ViewCars = () => {
@@ -73,6 +74,21 @@ const ViewCars = () => {
                     <p>Interior: {car.interior}</p>
 
                     <h3>${car.price.toLocaleString()}</h3>
+                    <Link
+                        to={`/customcars/${car.id}`}
+                        style={{
+                            display: 'inline-block',
+                            marginTop: '10px',
+                            padding: '10px 20px',
+                            backgroundColor: '#800000',
+                            color: 'white',
+                            borderRadius: '8px',
+                            textDecoration: 'none',
+                            fontWeight: 'bold'
+                        }}
+                    >
+                        View Details
+                    </Link>
                 </div>
             ))}
         </main>
