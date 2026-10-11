@@ -1,20 +1,39 @@
 import React from 'react'
-import '../App.css'
+import { NavLink } from 'react-router-dom'
 import '../css/Navigation.css'
 
 const Navigation = () => {
     return (
-        <nav>
-            <ul>
-                <li><h1>Bolt Bucket 🏎️</h1></li>
-            </ul>
+        <header className='showroom-header'>
+            <NavLink to='/' className='showroom-brand'>
+                <span className='brand-icon'>🏎️</span>
+                <span>
+                    <strong>BOLT BUCKET</strong>
+                    <small>BUILD YOUR DRIVE</small>
+                </span>
+            </NavLink>
 
-            <ul>
-                <li><a href='/' role='button'>Customize</a></li>
-                <li><a href='/customcars' role='button'>View Cars</a></li>
-            </ul>
-            
-        </nav>
+            <nav className='showroom-nav' aria-label='Main navigation'>
+                <NavLink
+                    to='/'
+                    end
+                    className={({ isActive }) =>
+                        `showroom-nav-link ${isActive ? 'active' : ''}`
+                    }
+                >
+                    Customize
+                </NavLink>
+
+                <NavLink
+                    to='/customcars'
+                    className={({ isActive }) =>
+                        `showroom-nav-link ${isActive ? 'active' : ''}`
+                    }
+                >
+                    My Garage
+                </NavLink>
+            </nav>
+        </header>
     )
 }
 

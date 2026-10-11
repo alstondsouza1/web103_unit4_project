@@ -1,0 +1,133 @@
+.showroom-page {
+    width: min(1200px, calc(100% - 40px));
+    margin: 35px auto;
+    color: white;
+}
+
+.showroom-intro {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.showroom-intro h2 {
+    font-size: clamp(30px, 4vw, 48px);
+    margin-bottom: 10px;
+}
+
+.showroom-intro p {
+    color: #b8cbd6;
+}
+
+.showroom-builder {
+    background: rgba(3, 10, 19, 0.88);
+    border: 1px solid rgba(67, 217, 255, 0.25);
+    border-radius: 18px;
+    padding: 28px;
+    backdrop-filter: blur(12px);
+}
+
+.showroom-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.showroom-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.showroom-tab {
+    padding: 13px 22px;
+    background: #142331;
+    color: white;
+    border: 1px solid #385063;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.showroom-tab:hover,
+.showroom-tab.selected {
+    background: #00b8e6;
+    color: #04121c;
+    border-color: #00b8e6;
+}
+
+.showroom-panel {
+    margin-top: 24px;
+    padding: 25px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid #385063;
+    border-radius: 12px;
+}
+
+.showroom-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+}
+
+.showroom-swatch {
+    width: 110px;
+    height: 90px;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.showroom-swatch:hover {
+    transform: translateY(-4px);
+}
+
+.showroom-swatch.selected {
+    border-color: #43d9ff;
+    box-shadow: 0 0 15px rgba(67, 217, 255, 0.45);
+}
+
+.showroom-preview {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.showroom-price {
+    display: inline-block;
+    padding: 15px 28px;
+    background: #00b8e6;
+    color: #04121c;
+    border-radius: 10px;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+@media (max-width: 650px) {
+    .showroom-builder {
+        padding: 18px;
+    }
+
+    .showroom-options {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .showroom-tab {
+        flex: 1;
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .showroom-swatch {
+        width: 75px;
+        height: 70px;
+    }
+
+    .showroom-price {
+        font-size: 23px;
+    }
+}
